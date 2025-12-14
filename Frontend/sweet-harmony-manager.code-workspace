@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "sweet-harmony-manager"
+		},
+		{
+			"path": "sweet-harmony-manager/sweetsImgs"
+		}
+	],
+	"settings": {
+		"powershell.cwd": "sweet-harmony-manager",
+		"liveServer.settings.multiRootWorkspaceName": "sweet-harmony-manager"
+	}
+}
