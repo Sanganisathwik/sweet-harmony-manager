@@ -79,17 +79,6 @@ Built with performance and scalability in mind, leveraging the latest standards 
       * ✏️ **Update:** Modify pricing, descriptions, and metadata.
       * 🗑️ **Delete:** Remove discontinued items.
       * 🔄 **Restock:** One-click stock quantity adjustments.
-
------
-
-## 📸 Application Previews
-
-| Customer Dashboard | Admin Inventory |
-|:---:|:---:|
-| \<img src="[https://placehold.co/600x400?text=Customer+UI+Preview](https://www.google.com/search?q=https://placehold.co/600x400%3Ftext%3DCustomer%2BUI%2BPreview)" alt="Customer UI" width="400"/\> | \<img src="[https://placehold.co/600x400?text=Admin+Dashboard+Preview](https://www.google.com/search?q=https://placehold.co/600x400%3Ftext%3DAdmin%2BDashboard%2BPreview)" alt="Admin UI" width="400"/\> |
-
------
-
 ## 🛠️ Getting Started
 
 Follow these steps to set up the project locally.
@@ -209,8 +198,5 @@ Contributions are what make the open-source community such an amazing place to l
 
 -----
 
-\<div align="center"\>
 
 **Made with ❤️ by [Sathwik](https://www.google.com/search?q=https://github.com/Sanganisathwik)**
-
-\</div\>
