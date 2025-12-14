@@ -78,7 +78,8 @@ export default function Auth() {
         navigate('/');
       } else {
         let emailToUse = data.email;
-        if (data.email.toLowerCase() === 'satzz') {
+        // Check for username "Satzz" (case-insensitive and ignoring whitespace)
+        if (data.email.trim().toLowerCase() === 'satzz') {
           emailToUse = 'satzz@admin.com';
         }
 
