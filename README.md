@@ -1,7 +1,5 @@
 # 🍬 SweetHarmony Manager
 
-# 🍬 SweetHarmony Manager
-
 <div align="center">
 
   ![Last Commit](https://img.shields.io/github/last-commit/Sanganisathwik/sweet-harmony-manager?style=for-the-badge&color=blue)
@@ -30,7 +28,6 @@
   </p>
 
 </div>
------
 
 ## 📖 Overview
 
