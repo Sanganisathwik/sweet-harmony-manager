@@ -51,3 +51,18 @@ DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
 CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- Backfill existing users (Run this once to sync existing Auth users to Profiles)
+INSERT INTO public.profiles (id, email, full_name, avatar_url)
+SELECT 
+  id, 
+  email, 
+  raw_user_meta_data->>'full_name', 
+  raw_user_meta_data->>'avatar_url'
+FROM auth.users
+ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO public.user_roles (user_id, role)
+SELECT id, 'customer'
+FROM auth.users
+ON CONFLICT (user_id) DO NOTHING;
