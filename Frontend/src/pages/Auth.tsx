@@ -15,11 +15,12 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
 const loginSchema = z.object({
-  email: z.string().email('Please enter a valid email'),
+  email: z.string().min(1, 'Email or Username is required'),
   password: z.string().min(6, 'Password must be at least 6 characters'),
 });
 
 const signupSchema = loginSchema.extend({
+  email: z.string().email('Please enter a valid email'),
   fullName: z.string().min(2, 'Name must be at least 2 characters').max(100, 'Name must be less than 100 characters'),
   confirmPassword: z.string(),
 }).refine((data) => data.password === data.confirmPassword, {
@@ -76,7 +77,12 @@ export default function Auth() {
         toast.success('Account created successfully! You are now signed in.');
         navigate('/');
       } else {
-        const { error } = await signIn(data.email, data.password);
+        let emailToUse = data.email;
+        if (data.email.toLowerCase() === 'satzz') {
+          emailToUse = 'satzz@admin.com';
+        }
+
+        const { error } = await signIn(emailToUse, data.password);
         if (error) {
           if (error.message.includes('Invalid login credentials')) {
             toast.error('Invalid email or password. Please try again.');
