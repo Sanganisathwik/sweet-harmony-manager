@@ -8,9 +8,11 @@ import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import { Checkbox } from '@/components/ui/checkbox';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Candy, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email'),
@@ -34,6 +36,7 @@ export default function Auth() {
   const { user, signIn, signUp, isLoading: authLoading } = useAuth();
   const [isSignup, setIsSignup] = useState(searchParams.get('mode') === 'signup');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isAdminLogin, setIsAdminLogin] = useState(false);
 
   const {
     register,
@@ -44,11 +47,12 @@ export default function Auth() {
     resolver: zodResolver(isSignup ? signupSchema : loginSchema),
   });
 
-  useEffect(() => {
-    if (user && !authLoading) {
-      navigate('/');
-    }
-  }, [user, authLoading, navigate]);
+  // Remove automatic redirect to allow manual handling in onSubmit
+  // useEffect(() => {
+  //   if (user && !authLoading) {
+  //     navigate('/');
+  //   }
+  // }, [user, authLoading, navigate]);
 
   useEffect(() => {
     setIsSignup(searchParams.get('mode') === 'signup');
@@ -81,8 +85,29 @@ export default function Auth() {
           }
           return;
         }
-        toast.success('Welcome back!');
-        navigate('/');
+
+        // Check for admin role if Admin Login is selected
+        if (isAdminLogin) {
+          const { data: { user } } = await supabase.auth.getUser();
+          if (user) {
+            const { data: roleData } = await supabase
+              .from('user_roles')
+              .select('role')
+              .eq('user_id', user.id)
+              .maybeSingle();
+            
+            if (roleData?.role === 'admin') {
+              toast.success('Welcome back, Admin!');
+              navigate('/admin');
+            } else {
+              toast.error('You do not have admin privileges.');
+              navigate('/');
+            }
+          }
+        } else {
+          toast.success('Welcome back!');
+          navigate('/');
+        }
       }
     } finally {
       setIsSubmitting(false);
@@ -160,6 +185,19 @@ export default function Auth() {
                 <p className="text-sm text-destructive">{errors.password.message}</p>
               )}
             </div>
+
+            {!isSignup && (
+              <div className="flex items-center space-x-2">
+                <Checkbox 
+                  id="admin-login" 
+                  checked={isAdminLogin}
+                  onCheckedChange={(checked) => setIsAdminLogin(checked as boolean)}
+                />
+                <Label htmlFor="admin-login" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                  Login as Admin
+                </Label>
+              </div>
+            )}
 
             {isSignup && (
               <div className="space-y-2">
